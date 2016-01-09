@@ -35,30 +35,43 @@ class Bot:
         passables = []
         for move in possibleMove:
             pos = game.board.to(loc, move)
-            if (game.board.is_mine(pos) and game.mines_locs[pos] != str(game.myHero.id)):
+            if (game.board.is_mine(pos) and game.mines_locs[pos] != str(game.myHero.id) and game.myHero.life > 25):
                 return move
             elif (game.board.is_tavern(loc) and game.myHero.life <= 50):
                 return move
 
-            elif (game.board.passable(pos)):
+            elif (game.board.passable(pos) and (game.board.is_not_pine(pos) or game.myHero.life < 40)):
                 passables.append(move)
+
 
         for passable in passables:
             first_pos = game.board.to(loc, passable)
             for move in possibleMove:
                 second_pos = game.board.to(first_pos, move)
-                if (game.board.is_mine(second_pos) and game.mines_locs[second_pos] != str(game.myHero.id)):
+                if (game.board.is_mine(second_pos) and game.mines_locs[second_pos] != str(game.myHero.id) and game.myHero.life > 25):
                     self.moveToDo.append(move)
                     self.moveToDo.append(passable)
                 elif (game.board.is_tavern(second_pos) and game.myHero.life <= 50):
                     self.moveToDo.append(move)
                     self.moveToDo.append(passable)
-        if(len(self.moveToDo) != 0):
-            return self.moveToDo.pop()
 
-
+        for passable in passables:
+            first_pos = game.board.to(loc, passable)
+            for move in possibleMove:
+                second_pos = game.board.to(first_pos, move)
+                for second_move in possibleMove:
+                    third_pos = game.board.to(second_pos, second_move)
+                    if (game.board.is_mine(third_pos) and game.mines_locs[third_pos] != str(game.myHero.id) and game.myHero.life > 25 ):
+                        self.moveToDo.append(second_move)
+                        self.moveToDo.append(move)
+                        self.moveToDo.append(passable)
+                    elif (game.board.is_tavern(third_pos) and game.myHero.life <= 50):
+                        self.moveToDo.append(second_move)
+                        self.moveToDo.append(move)
+                        self.moveToDo.append(passable)
+            if (len(self.moveToDo) != 0):
+                return self.moveToDo.pop()
         return choice(passables)
-
 
 class RandomBot(Bot):
     def move(self, state):
