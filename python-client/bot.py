@@ -1,7 +1,7 @@
 from random import choice
 import time
 from game import Game
-from game import Hero
+
 
 class Bot:
     def move(self, state):
@@ -19,12 +19,9 @@ class Bot:
         mines_locs
 
     def distance(self, pos1, pos2):
-        x = abs(pos2[0] - pos1[0])
-        y = abs(pos2[1] - pos1[1])
+        x = (pos2[0] - pos1[0])
+        y = (pos2[1] - pos1[1])
         return (x,y)
-
-
-
 
 class RandomBot(Bot):
     def move(self, state):
