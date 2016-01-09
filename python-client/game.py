@@ -97,6 +97,9 @@ class Board:
         pos = self.tiles[loc[0]][loc[1]]
         return isinstance(pos, MineTile)
 
+    def is_tavern(self, loc):
+        return self.tiles[loc[0]][loc[1]] == TAVERN
+
 class Hero:
     def __init__(self, hero):
         self.id = hero['id']

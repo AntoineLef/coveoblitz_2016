@@ -30,6 +30,9 @@ class Bot:
             pos = game.board.to(loc, move)
             if(game.board.is_mine(pos) and game.mines_locs[pos] != str(game.myHero.id)):
                 return move
+            elif(game.board.is_tavern(loc) and game.myHero.life <= 50):
+                return move
+
             elif(game.board.passable(pos)):
                 passables.append(move)
         else:
