@@ -25,15 +25,53 @@ class Bot:
                 loc = (x, y)
                 if (game.board.passable(loc)):
                     return 'West'
-                return
-            else
-                return
-        else
-              if (deltaY < 0):
-                return
-            else
-                return
-            return
+                else:
+                    dirs = ['Stay', 'North', 'South', 'East', 'West']
+                    return choice(dirs)
+            else:
+                x, y = loc
+                x +=1
+                loc = (x, y)
+                if (game.board.passable(loc)):
+                    return 'East'
+                else:
+                    dirs = ['Stay', 'North', 'South', 'East', 'West']
+                    return choice(dirs)
+        else:
+            if (deltaY < 0):
+                x, y = loc
+                y -=1
+                loc = (x, y)
+                if (game.board.passable(loc)):
+                    return 'South'
+                else:
+                    dirs = ['Stay', 'North', 'South', 'East', 'West']
+                    return choice(dirs)
+            else:
+                x, y = loc
+                y +=1
+                loc = (x, y)
+                if (game.board.passable(loc)):
+                    return 'North'
+                else:
+                    dirs = ['Stay', 'North', 'South', 'East', 'West']
+                    return choice(dirs)
+
+    def move(self, state):
+        game = Game(state)
+        game.heroes_locs.keys
+        game.mines_locs
+        game.spikes_locs
+        game.taverns_locs
+        self.getNearestEnemy(game.myHero, game.mines_locs)
+
+    def getNearestMine(self, myHero, mines_locs):
+        mines_locs
+
+    def distance(self, pos1, pos2):
+        x = (pos2[0] - pos1[0])
+        y = (pos2[1] - pos1[1])
+        return (x,y)
     pass
 
 class RandomBot(Bot):

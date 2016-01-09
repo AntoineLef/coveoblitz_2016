@@ -28,6 +28,7 @@ class Game:
         self.state = state
         self.board = Board(state['game']['board'])
         self.heroes = [Hero(state['game']['heroes'][i]) for i in range(len(state['game']['heroes']))]
+        self.myHero = Hero(state['hero'])
         self.mines_locs = {}
         self.heroes_locs = {}
         self.taverns_locs = set([])
@@ -95,6 +96,7 @@ class Board:
 
 class Hero:
     def __init__(self, hero):
+        self.id = hero['id']
         self.name = hero['name']
         self.pos = hero['pos']
         self.life = hero['life']
