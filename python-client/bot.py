@@ -14,6 +14,26 @@ class Bot:
         if (Hero.life == 100 & (cost< Hero.life-20)| (Hero.life >= 35 & (cost< Hero.life-20))):
             return True
         return False
+
+    def move(self, state, deltaX, deltaY):
+        game = Game(state)
+        loc = game.hero.pos;
+        if (deltaX < deltaY):
+            if (deltaX < 0):
+                x, y = loc
+                x -=1
+                loc = (x, y)
+                if (game.board.passable(loc)):
+                    return 'West'
+                return
+            else
+                return
+        else
+              if (deltaY < 0):
+                return
+            else
+                return
+            return
     pass
 
 class RandomBot(Bot):
