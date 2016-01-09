@@ -93,6 +93,9 @@ class Board:
 
         return (n_row, n_col)
 
+    def is_mine(self, loc):
+        pos = self.tiles[loc[0]][loc[1]]
+        return isinstance(pos, MineTile)
 
 class Hero:
     def __init__(self, hero):
