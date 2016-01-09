@@ -1,5 +1,6 @@
 from random import choice
 import time
+import math
 from game import Game
 
 class Bot:
@@ -18,11 +19,11 @@ class Bot:
             return True
         return False
 
-    def move(self, state, distance):
+    def move(self, state):
         game = Game(state)
         deltaX, deltaY = distance
         loc = game.myHero.pos;
-        if (deltaX < deltaY):
+        if (math.abs(deltaX) < math.abs(deltaY)):
             if (deltaX < 0):
                 x, y = loc
                 x -=1
