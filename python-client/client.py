@@ -5,7 +5,7 @@ import os
 import sys
 import requests
 import re
-from bot import RandomBot
+from bot import Bot
 
 TIMEOUT = 15
 BASE_URL = "http://blitz2016.xyz:8080"
@@ -102,5 +102,5 @@ if __name__ == "__main__":
         if mode != "training" and mode != "competition":
             print("Invalid game mode. Please use 'training' or 'competition'.")
         else:
-            start(BASE_URL, key, mode, game_id, RandomBot())
+            start(BASE_URL, key, mode, game_id, Bot())
             print("\nGame finished!")
