@@ -21,12 +21,13 @@ class Bot:
 
     def move(self, state):
         game = Game(state)
-        deltaX, deltaY = distance
         loc = game.myHero.pos;
+        deltaX, deltaY = self.getNearestMine(game.myHero, game.mines_locs)
+        loc = (game.myHero.pos["x"], game.myHero.pos["y"])
         if (math.abs(deltaX) < math.abs(deltaY)):
             if (deltaX < 0):
                 x, y = loc
-                x -=1
+                x -= 1
                 loc = (x, y)
                 if (game.board.passable(loc)):
                     return 'West'
@@ -35,7 +36,7 @@ class Bot:
                     return choice(dirs)
             else:
                 x, y = loc
-                x +=1
+                x += 1
                 loc = (x, y)
                 if (game.board.passable(loc)):
                     return 'East'
@@ -45,7 +46,7 @@ class Bot:
         else:
             if (deltaY < 0):
                 x, y = loc
-                y -=1
+                y -= 1
                 loc = (x, y)
                 if (game.board.passable(loc)):
                     return 'South'
@@ -54,7 +55,7 @@ class Bot:
                     return choice(dirs)
             else:
                 x, y = loc
-                y +=1
+                y += 1
                 loc = (x, y)
                 if (game.board.passable(loc)):
                     return 'North'
