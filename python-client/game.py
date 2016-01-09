@@ -100,6 +100,9 @@ class Board:
     def is_tavern(self, loc):
         return self.tiles[loc[0]][loc[1]] == TAVERN
 
+    def is_not_pine(self, loc):
+        return self.tiles[loc[0]][loc[1]] != SPIKE
+
 class Hero:
     def __init__(self, hero):
         self.id = hero['id']
