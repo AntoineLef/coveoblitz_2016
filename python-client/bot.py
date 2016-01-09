@@ -15,8 +15,9 @@ class Bot:
             return True
         return False
 
-    def move(self, state, deltaX, deltaY):
+    def move(self, state, distance):
         game = Game(state)
+        deltaX, deltaY = distance
         loc = game.myHero.pos;
         if (deltaX < deltaY):
             if (deltaX < 0):
