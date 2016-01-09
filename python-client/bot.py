@@ -24,7 +24,7 @@ class Bot:
         loc = game.myHero.pos;
         deltaX, deltaY = self.getNearestMine(game.myHero, game.mines_locs)
         loc = (game.myHero.pos["x"], game.myHero.pos["y"])
-        if (math.abs(deltaX) < math.abs(deltaY)):
+        if (abs(deltaX) < abs(deltaY)):
             if (deltaX < 0):
                 x, y = loc
                 x -= 1
@@ -83,6 +83,16 @@ class Bot:
         return (deltaX, deltaY)
     pass
 
+    def getNearestBeer(self, myHero, beer_location):
+        deltaX = 999999
+        deltaY = 999999
+
+        for beer_position in beer_location.key():
+            distance_calculate = self.distance(myHero.pos, beer_position)
+            if(deltaY + deltaX > distance_calculate[0] + distance_calculate[1]):
+                deltaX = distance_calculate[0]
+                deltaY = distance_calculate[1]
+        return(deltaX, deltaY)
     def distance(self, pos1, pos2):
         x = (pos2[0] - pos1["y"])
         y = (pos2[1] - pos1["x"])
