@@ -24,8 +24,8 @@ class Bot:
         game = Game(state)
         if len(self.move_list) == 0:
             self.getNearestMine(game.myHero, game.mines_locs)
-            print("getting position")
             self.list_move(game, game.myHero, self.wantedPosition)
+            self.move_list.reverse()
         move = self.move_list[0]
         self.move_list.remove(move)
 
@@ -36,14 +36,12 @@ class Bot:
         mines = game.mines_locs.keys()
 
     def getNearestMine(self, myHero, mines_locs):
-        print len(mines_locs)
         not_owned_mine = [];
         for mine in mines_locs.keys():
             if(mines_locs[mine] != myHero.id):
 
                 not_owned_mine.append(mine)
 
-        print len(not_owned_mine)
         deltaX = 999999
         deltaY = 999999
 
@@ -57,14 +55,17 @@ class Bot:
         return (deltaX, deltaY)
     pass
     def list_move(self,game,  myHero, wantedPosition):
+        print(wantedPosition)
         y, x = wantedPosition
         hero_position = myHero.pos
         deltaX = x - hero_position["x"]
         deltaY = y - hero_position["y"]
+        print(deltaX, deltaY)
         while(deltaX !=0 and deltaY != 0):
+            print(deltaX, deltaY)
             if(deltaY > 0):
                 if(game.board.passable((y + 1, x))):
-                    self.move_list.append("South")
+                    self.move_list.append("North")
                     deltaY -= 1
                 elif(game.board.passable((y, x + 1))):
                     self.move_list.append("East")
@@ -73,21 +74,23 @@ class Bot:
                     self.move_list.append("West")
                     deltaX += 1
                 else:
-                    self.move_list.append("North")
+                    self.move_list.append("South")
                     deltaY += 1
             elif(deltaY <= 0):
                 if(game.board.passable((y - 1, x))):
                     self.move_list.append("North")
                     deltaY -= 1
                 elif(game.board.passable((y, x + 1))):
-                    self.move_list.append("East")
+                    self.move_list.append("West")
                     deltaX -= 1
                 elif(game.board.passable((y, x - 1))):
-                    self.move_list.append("West")
+                    self.move_list.append("East")
                     deltaX += 1
                 else:
                     self.move_list.append("South")
-                    deltaY -= 1
+                    deltaY += 1
+
+        print(self.move_list)
         return self.move_list
 
     def distance(self, pos1, pos2):
