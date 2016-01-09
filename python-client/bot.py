@@ -2,17 +2,65 @@ from random import choice
 import time
 from game import Game
 
-
 class Bot:
+
     def __init__(self):
         self.wantedPosition = 1
-    def move(self, state):
+
+    def calculateThreshold(self, Hero, tileNumber, pikeNumber, gettingMine):
+        mineCost = 25
+        moveCost = 1
+        pikeCost = 10
+        cost = tileNumber*moveCost + pikeNumber*pikeCost
+        if (gettingMine ):
+            cost = tileNumber*moveCost + pikeNumber*pikeCost + mineCost
+        if (Hero.life == 100 & (cost< Hero.life-20)| (Hero.life >= 35 & (cost< Hero.life-20))):
+            return True
+        return False
+
+    def move(self, state, distance):
         game = Game(state)
-        game.heroes_locs.keys
-        game.mines_locs
-        game.spikes_locs
-        game.taverns_locs
-        self.getNearestMine(game.myHero, game.mines_locs)
+        deltaX, deltaY = distance
+        loc = game.myHero.pos;
+        if (deltaX < deltaY):
+            if (deltaX < 0):
+                x, y = loc
+                x -=1
+                loc = (x, y)
+                if (game.board.passable(loc)):
+                    return 'West'
+                else:
+                    dirs = ['Stay', 'North', 'South', 'East', 'West']
+                    return choice(dirs)
+            else:
+                x, y = loc
+                x +=1
+                loc = (x, y)
+                if (game.board.passable(loc)):
+                    return 'East'
+                else:
+                    dirs = ['Stay', 'North', 'South', 'East', 'West']
+                    return choice(dirs)
+        else:
+            if (deltaY < 0):
+                x, y = loc
+                y -=1
+                loc = (x, y)
+                if (game.board.passable(loc)):
+                    return 'South'
+                else:
+                    dirs = ['Stay', 'North', 'South', 'East', 'West']
+                    return choice(dirs)
+            else:
+                x, y = loc
+                y +=1
+                loc = (x, y)
+                if (game.board.passable(loc)):
+                    return 'North'
+                else:
+                    dirs = ['Stay', 'North', 'South', 'East', 'West']
+                    return choice(dirs)
+
 
     def getNearestMine(self, myHero, mines_locs):
         not_owned_mine = [];
@@ -37,6 +85,7 @@ class Bot:
         x = (pos2[0] - pos1["y"])
         y = (pos2[1] - pos1["x"])
         return (x,y)
+    pass
 
 class RandomBot(Bot):
     def move(self, state):

@@ -94,7 +94,6 @@ class Board:
         return (n_row, n_col)
 
 
-
 class Hero:
     def __init__(self, hero):
         self.id = hero['id']
