@@ -17,7 +17,7 @@ class Bot:
 
     def move(self, state, deltaX, deltaY):
         game = Game(state)
-        loc = game.hero.pos;
+        loc = game.myHero.pos;
         if (deltaX < deltaY):
             if (deltaX < 0):
                 x, y = loc
