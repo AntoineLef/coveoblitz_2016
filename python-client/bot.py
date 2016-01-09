@@ -33,13 +33,15 @@ class Bot:
         loc = (game.myHero.pos["x"], game.myHero.pos["y"])
         possibleMove = ["North", "South", "East", "West"]
         passables = []
+        number_of_mine = self.number_of_mine(game)
         for move in possibleMove:
             pos = game.board.to(loc, move)
             if (game.board.is_mine(pos) and game.mines_locs[pos] != str(game.myHero.id) and game.myHero.life > 25):
                 return move
             elif (game.board.is_tavern(loc) and game.myHero.life <= 50):
                 return move
-
+            elif (game.board.is_mine(pos) and game.mines_locs[pos] != str(game.myHero.id) and number_of_mine == 0):
+                return move
             elif (game.board.passable(pos) and (game.board.is_not_pine(pos) or game.myHero.life >= 25)):
                 passables.append(move)
 
@@ -73,6 +75,12 @@ class Bot:
                 return self.moveToDo.pop()
         return choice(passables)
 
+    def number_of_mine(self, game):
+        number_of_mine = 0
+        for mine in game.mines_locs.keys():
+            if(game.mines_locs[mine] == str(game.myHero.id)):
+                number_of_mine += 1
+        return number_of_mine
 class RandomBot(Bot):
     def move(self, state):
         game = Game(state)
