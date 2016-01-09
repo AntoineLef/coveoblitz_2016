@@ -15,55 +15,133 @@ class Bot:
         cost = tileNumber*moveCost + pikeNumber*pikeCost
         if (gettingMine ):
             cost = tileNumber*moveCost + pikeNumber*pikeCost + mineCost
-        if (Hero.life == 100 & (cost< Hero.life-20)| (Hero.life >= 35 & (cost< Hero.life-20))):
+        if (Hero.life == 100 and (cost< Hero.life-20) or (Hero.life >= 35 and (cost< Hero.life-20))):
             return True
         return False
 
     def move(self, state):
         game = Game(state)
-        loc = game.myHero.pos;
         deltaX, deltaY = self.getNearestMine(game.myHero, game.mines_locs)
         loc = (game.myHero.pos["x"], game.myHero.pos["y"])
-        if (math.abs(deltaX) < math.abs(deltaY)):
+        print( "In move: ",deltaX, deltaY)
+        if (deltaX != 0 and abs(deltaX) < abs(deltaY)):
             if (deltaX < 0):
                 x, y = loc
                 x -= 1
-                loc = (x, y)
-                if (game.board.passable(loc)):
+                lookUpLoc = (x, y)
+                mineLook = (y,x)
+                if (game.board.passable(lookUpLoc) or game.mines_locs.has_key(mineLook)):
+                    print("West passed")
                     return 'West'
                 else:
-                    dirs = ['Stay', 'North', 'South', 'East', 'West']
-                    return choice(dirs)
+                    if (deltaY < 0 ):
+                        x, y = loc
+                        y -= 1
+                        lookUpLoc = (x, y)
+                        mineLook = (y,x)
+                        if (game.board.passable(lookUpLoc) or game.mines_locs.has_key(mineLook)):
+                            print ("West didn't pass south")
+                            return 'South'
+                        else:
+                            print ("West didn't pass north")
+                            return 'North'
+                    else:
+                        x, y = loc
+                        y += 1
+                        lookUpLoc = (x, y)
+                        mineLook = (y,x)
+                        if (game.board.passable(lookUpLoc) or game.mines_locs.has_key(mineLook)):
+                            print ("West didn't pass North because deltaY")
+                            return 'North'
+                        else:
+                            print ("West didn't pass South because deltaY")
+                            return 'South'
             else:
                 x, y = loc
                 x += 1
-                loc = (x, y)
-                if (game.board.passable(loc)):
+                lookUpLoc = (x, y)
+                mineLook = (y,x)
+                if (game.board.passable(lookUpLoc) or game.mines_locs.has_key(mineLook)):
+                    print ("East passed")
                     return 'East'
                 else:
-                    dirs = ['Stay', 'North', 'South', 'East', 'West']
-                    return choice(dirs)
-        else:
+                    if (deltaY < 0 ):
+                        x, y = loc
+                        y -= 1
+                        lookUpLoc = (x, y)
+                        mineLook = (y,x)
+                        if (game.board.passable(lookUpLoc) or game.mines_locs.has_key(mineLook)):
+                            print("East didn't passed South")
+                            return 'South'
+                        else:
+                            print("East didn't passed North")
+                            return 'North'
+                    else:
+                        x, y = loc
+                        y += 1
+                        loc = (x, y)
+                        mineLook = (y,x)
+                        if (game.board.passable(loc) or game.mines_locs.has_key(mineLook)):
+                            print("East didn't passed North because ")
+                            return 'North'
+                        else:
+                            print("East didn't passed South because")
+                            return 'South'
+        elif (deltaY != 0):
             if (deltaY < 0):
                 x, y = loc
                 y -= 1
-                loc = (x, y)
-                if (game.board.passable(loc)):
+                lookUpLoc = (x, y)
+                mineLook = (y,x)
+                if (game.board.passable(lookUpLoc) or game.mines_locs.has_key(mineLook)):
                     return 'South'
                 else:
-                    dirs = ['Stay', 'North', 'South', 'East', 'West']
-                    return choice(dirs)
+                    if (deltaY < 0 ):
+                        x, y = loc
+                        y -= 1
+                        lookUpLoc = (x, y)
+                        mineLook = (y,x)
+                        if (game.board.passable(lookUpLoc) or game.mines_locs.has_key(mineLook)):
+                            return 'South'
+                        else:
+                            return 'North'
+                    else:
+                        x, y = loc
+                        y += 1
+                        lookUpLoc = (x, y)
+                        mineLook = (y,x)
+                        if (game.board.passable(lookUpLoc) or game.mines_locs.has_key(mineLook)):
+                            return 'North'
+                        else:
+                            return 'South'
             else:
                 x, y = loc
                 y += 1
-                loc = (x, y)
-                if (game.board.passable(loc)):
+                lookUpLoc = (x, y)
+                mineLook = (y,x)
+                if (game.board.passable(lookUpLoc) or game.mines_locs.has_key(mineLook)):
                     return 'North'
                 else:
-                    dirs = ['Stay', 'North', 'South', 'East', 'West']
-                    return choice(dirs)
-
-
+                    if (deltaX < 0 ):
+                        x, y = lookUpLoc
+                        x -= 1
+                        lookUpLoc = (x, y)
+                        mineLook = (y,x)
+                        if (game.board.passable(lookUpLoc) or game.mines_locs.has_key(mineLook)):
+                            return 'West'
+                        else:
+                            return 'East'
+                    else:
+                        x, y = loc
+                        x += 1
+                        lookUpLoc = (x, y)
+                        mineLook = (y,x)
+                        if (game.board.passable(lookUpLoc) or game.mines_locs.has_key(mineLook)):
+                            return 'East'
+                        else:
+                            return 'West'
+        else:
+            return 'Stay'
     def getNearestMine(self, myHero, mines_locs):
         not_owned_mine = [];
         for mine in mines_locs.keys():
@@ -86,7 +164,7 @@ class Bot:
     def distance(self, pos1, pos2):
         x = (pos2[0] - pos1["y"])
         y = (pos2[1] - pos1["x"])
-        return (x,y)
+        return (y,x)
     pass
 
 class RandomBot(Bot):
