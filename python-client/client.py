@@ -6,6 +6,7 @@ import sys
 import requests
 import re
 from bot import Bot
+import webbrowser
 
 TIMEOUT = 15
 BASE_URL = "http://blitz2016.xyz:8080"
@@ -71,7 +72,8 @@ def start(server_url, key, mode, game_id, bot):
     # Get the initial state
     state = get_new_game_state(session, server_url, key, mode, game_id)
     print("Playing at: " + state['viewUrl'])
-
+    if mode == 'training':
+        webbrowser.open_new_tab(state['viewUrl']);
     while not is_finished(state):
         # Choose a move
         direction = bot.move(state)
