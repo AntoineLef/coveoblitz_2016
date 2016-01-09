@@ -40,7 +40,7 @@ class Bot:
             elif (game.board.is_tavern(loc) and game.myHero.life <= 50):
                 return move
 
-            elif (game.board.passable(pos) and (game.board.is_not_pine(pos) and game.myHero.life >= 25)):
+            elif (game.board.passable(pos) and (game.board.is_not_pine(pos) or game.myHero.life >= 25)):
                 passables.append(move)
 
 
